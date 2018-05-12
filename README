@@ -1,0 +1,30 @@
+Source of information:
+===============================================================================
+9 day Weather forecast: http://www.hko.gov.hk/textonly/v2/forecast/nday.htm
+
+Could obtain - Date
+             - Wind
+               - Direction
+               - Level
+             - Weather
+             - Temperature Range ( Unit: Degree Celsius )
+               - Lowest
+               - Highest 
+             - R.H Range ( Unit: Percent )
+               - Lowest
+               - Highest
+
+
+
+Regional Weather in Hong Kong: http://www.hko.gov.hk/textonly/v2/forecast/text_readings_e.htm
+
+Could obtain - Location
+             - Current Temperature
+             - Relative Humidity
+             - Min Temperature
+             - Max Temperature
+             - Past 24-Hour Temperature Difference
+             - 10 minutes Mean Wind information
+               - Direction
+               - Speed
+               - Max Gust

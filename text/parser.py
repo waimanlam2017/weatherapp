@@ -32,34 +32,59 @@ class Parser():
         for i in range(0 , len(list_of_lines)):
             #If the line starts with Date/Month, process the next four lines together
             if ( list_of_lines[i].startswith("Date") and "Month" in list_of_lines[i] ):                
-                #weather is ignored here for processing later
-                weather = list_of_lines[i+2]
-                                
+                idx = i
+                
+                #print(list_of_lines[idx])
+                #print(list_of_lines[idx+1])
+                #print(list_of_lines[idx+2])
+                #print(list_of_lines[idx+3])
+                #print(list_of_lines[idx+4])
+
                 date = list_of_lines[i]
-                date_list = [int(s) for s in re.findall(r'-?\d+\.?\d*', date)]
+                date_list = [int(s) for s in re.findall(r"[+-]?\d+(?:\.\d+)?", date)]
                 forecast_day = date_list[0]
                 forecast_month = date_list[1]
+                idx+=1
 
-                wind = list_of_lines[i+1]
-                wind_list = [int(s) for s in re.findall(r'-?\d+\.?\d*', wind)]
-                wind_speed = wind_list[0]
+                wind = list_of_lines[idx]
+                wind_list = [int(s) for s in re.findall(r"[+-]?\d+(?:\.\d+)?", wind)]
+                if ( len(wind_list) > 1 ):
+                    min_wind_speed = wind_list[0]
+                    max_wind_speed = wind_list[1]
+                else:
+                    min_wind_speed = wind_list[0]
+                    max_wind_speed = wind_list[0]
+                idx+=1
 
-                temperature = list_of_lines[i+3]
-                temperature_list = [int(s) for s in re.findall(r'-?\d+\.?\d*', temperature)]  
+                #weather is ignored here for processing later
+                flag_weather_section_not_done = True
+                weather_list = []
+                while(flag_weather_section_not_done):
+                    weather_list.append(list_of_lines[idx])
+                    if (list_of_lines[idx+1].startswith("Temp")):
+                        flag_weather_section_not_done = False
+                    idx+=1
+
+                temperature = list_of_lines[idx]
+                temperature_list = [int(s) for s in re.findall(r"[+-]?\d+(?:\.\d+)?", temperature)]  
                 min_temperature = temperature_list[0]
                 max_temperature = temperature_list[1]
+                idx+=1
 
-                relative_humidity = list_of_lines[i+4]
-                relative_humidity_list = [int(s) for s in re.findall(r'-?\d+\.?\d*', relative_humidity)]  
+                relative_humidity = list_of_lines[idx]
+                relative_humidity_list = [int(s) for s in re.findall(r"[+-]?\d+(?:\.\d+)?", relative_humidity)]  
                 min_relative_humidity = relative_humidity_list[0]
                 max_relative_humidity = relative_humidity_list[1]
 
                 forecast_date = datetime.datetime(next_day_year, forecast_month, forecast_day,0,0,0,0)
                 date_diff = forecast_date - today
-                #print(date_diff.total_seconds())
-                if ( date_diff.total_seconds() < 86400 ):
+                if ( date_diff.total_seconds() < 86400 ):                
                     print("Tomorrow is the forecast date!")
-                    print(forecast_date)
+                    print("Date:", next_day_year, forecast_month, forecast_day)
+                    print("Wind Speed: ", min_wind_speed, max_wind_speed)
+                    print("Weather:", weather_list)
+                    print("Temperature:", min_temperature, max_temperature)
+                    print("Relative Humidity:", min_relative_humidity, max_relative_humidity)
 
 
         
